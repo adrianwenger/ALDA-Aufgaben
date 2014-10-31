@@ -4,7 +4,7 @@
 package dictionary;
 
 public interface Dictionary<K,V> {
-    V insert(K key, V value);
+    V insert(K  key, V value);
     // Associates the specified value with the specified key in this map.
     // If the map previously contained a mapping for the key,
     // the old value is replaced by the specified value.
