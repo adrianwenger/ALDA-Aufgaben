@@ -43,8 +43,8 @@ public class HashDictionary<K, V> implements Dictionary<K, V> {
     @Override
     public V search(K key) {
         //generate hash
-        int hash = hash(key);
-
+        int hash = hashEval(key.hashCode() % size);
+        
         if (lList[hash] != null) {
             // key[Hash] already stored, return value
             LinkedList<Entry<K, V>> list = lList[hash];
@@ -63,15 +63,14 @@ public class HashDictionary<K, V> implements Dictionary<K, V> {
     @Override
     public V remove(K key) {
         //generate hash
-        int hash = hash(key);
+        int hash = hashEval(key.hashCode() % size);
         // key[Hash] already stored, return value
         if (lList[hash] != null) {
-            LinkedList<Entry<K, V>> list = lList[hash];
-            for (Entry e : list) {
-                if (e.getKey().equals(key)) {
-                    list.remove(key);
-                    table.remove(key);
-                    return (V) e.getValue();
+            for(int i = 0; i < lList[hash].size(); i++) {
+                if (lList[hash].get(i).key.equals(key)) {
+                    Entry<K,V> temp = lList[hash].get(i);
+                    lList[hash].remove(i);
+                    return temp.value;
                 }
             }
         }
@@ -82,11 +81,7 @@ public class HashDictionary<K, V> implements Dictionary<K, V> {
     @Override
     public V insert(K key, V value) {
         //generate hash
-        int hash = hash(key);
-
-        if (search(key) != null) {
-            return null;
-        }
+        int hash = hashEval(hashEval(key.hashCode() % size));
 
         table.add(key);
         //no hash Entry 
@@ -107,14 +102,10 @@ public class HashDictionary<K, V> implements Dictionary<K, V> {
         return value;
     }
 
-    public int hash(K key) {
-        int adr = 0;
-        for (int i = 0; i < key.toString().length(); i++) {
-            adr = 31 * adr + key.toString().charAt(i);
-        }
-        if (adr < 0) {
-            adr = -adr;
-        }
-        return adr % size;
+    
+    public int hashEval(int hash) {
+        if(hash <0)
+            return -hash;
+        return hash;
     }
 }

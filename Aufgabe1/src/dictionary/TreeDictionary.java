@@ -1,9 +1,9 @@
 // TreeDictionary.java
-
 package dictionary;
 
 /**
  * TreeDictionary is a Tree-Map-Dictionary with an own implementation.
+ *
  * @author Philipp Schultheiss
  * @version 1.00
  * @param <K>
@@ -11,12 +11,18 @@ package dictionary;
  * @since 2014-10-20
  */
 public class TreeDictionary<K extends Comparable<? super K>, V>
-    implements Dictionary<K, V> {
+        implements Dictionary<K, V> {
+
+    /**
+     * The root Entry of the Tree.
+     */
+    private Entry<K, V> root;
 
     /**
      * Private Entry-Class to save a key-value-pair.
      */
     private class Entry<K, V> {
+
         /**
          * the height of the current entry.
          */
@@ -41,6 +47,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
         /**
          * Public-Constructor.
+         *
          * @param key specified key.
          * @param value specified value.
          */
@@ -52,12 +59,15 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
             this.right = null;
         }
     }
+
     /**
      * Help-Object for the rotate-Methods.
+     *
      * @param <K> to save a key.
      * @param <V> to save a value.
      */
     private static class Node<K, V> {
+
         /**
          * saved key.
          */
@@ -67,10 +77,6 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
          */
         private V value;
     }
-    /**
-     * The root Entry of the Tree.
-     */
-    private Entry<K, V> root;
 
     @Override
     public final V insert(final K key, final V value) {
@@ -81,6 +87,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Recursive help-method for insert.
+     *
      * @param key specified key.
      * @param value specified value
      * @param p specified entry
@@ -110,6 +117,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Private recursive help-method for search.
+     *
      * @param key specified key.
      * @param p specified Entry
      * @return the value to the key.
@@ -138,6 +146,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Private recurcive help-method for the remove.
+     *
      * @param key specified key which should be removed.
      * @param p specified Entry.
      * @return the next Entry
@@ -156,28 +165,30 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
                 p = p.left;
             } else {
                 Node<K, V> min = new Node<K, V>();
-                p.right = getRemMinR(p.right, min);
+                p.right = getLowestNodeR(p.right, min);
                 p.key = min.key;
                 p.value = min.value;
             }
         }
+        p=balance(p);
         return p;
     }
 
     /**
      * Help-Method for the remove to search the lowest key in the left tree.
+     *
      * @param p specified Entry
      * @param min help object to save the old values
      * @return the next Entry
      */
-    private Entry<K, V> getRemMinR(Entry<K, V> p, Node<K, V> min) {
+    private Entry<K, V> getLowestNodeR(Entry<K, V> p, Node<K, V> min) {
         assert p != null;
         if (p.left == null) {
             min.key = p.key;
             min.value = p.value;
             p = p.right;
         } else {
-            p.left = getRemMinR(p.left, min);
+            p.left = getLowestNodeR(p.left, min);
         }
         p = balance(p);
         return p;
@@ -185,6 +196,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Help-Method to balance the tree.
+     *
      * @param p the Entry which should be balanced
      * @return the next Entry
      */
@@ -211,6 +223,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Help-Getter for the Height of an Entry.
+     *
      * @param p specified Entry
      * @return the height as integer or -1 if p is null
      */
@@ -224,6 +237,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Help method to get the value if the entry is balanced or not.
+     *
      * @param p specified Entry.
      * @return the heigth as an Integer. 0 if its a leaf.
      */
@@ -237,6 +251,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Help-Method to rotate the Entry right.
+     *
      * @param p specified Entry.
      * @return the new specified Entry p.
      */
@@ -252,6 +267,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Help-Method to rotate the Entry left.
+     *
      * @param p specified Entry
      * @return the new specified Entry p.
      */
@@ -267,6 +283,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Help-Method to rotate left first and then to rotate left.
+     *
      * @param p Entry to rotate
      * @return the new specified Entry p.
      */
@@ -278,6 +295,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Help-Method to rotate right first and then to rotate left.
+     *
      * @param p Entry to rotate.
      * @return the new specified Entry p.
      */
@@ -295,6 +313,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
 
     /**
      * Recursive Help-Method to create a String from the tree.
+     *
      * @param sb StringBuilder to which the methods append.
      * @param p current Entry.
      * @return the StringBuilder
