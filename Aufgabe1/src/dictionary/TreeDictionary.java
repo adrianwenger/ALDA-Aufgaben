@@ -179,6 +179,7 @@ public class TreeDictionary<K extends Comparable<? super K>, V>
         } else {
             p.left = getRemMinR(p.left, min);
         }
+        p = balance(p);
         return p;
     }
 
