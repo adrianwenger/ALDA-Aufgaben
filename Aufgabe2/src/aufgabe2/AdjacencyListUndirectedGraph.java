@@ -29,7 +29,8 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
 
     @Override
     public boolean addEdge(V v, V w) {
-        adjacencyList.get(v).put(v, w);
+        return true;
+        //adjacencyList.get(v).put(v, w);
     }
 
     @Override

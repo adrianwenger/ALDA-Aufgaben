@@ -10,20 +10,20 @@ import java.util.List;
 public class GraphTraversion<V> {
     private List<V> ts;
     
-    public static <V> List<V> depthFirstSearch(Graph<V> g, V s) {
-       return g;
-    }
-    
-    public static <V> List<V> breadthFirstSearch(Graph<V> g, V s){
-        return g;
-    }
-    
-    public static <V> List<V> topologicalSort(DirectedGraph<V> g){
-        return g;
-    }
-    
-    
-    
+//    public static <V> List<V> depthFirstSearch(Graph<V> g, V s) {
+//       return ts.get(g);
+//    }
+//    
+//    public static <V> List<V> breadthFirstSearch(Graph<V> g, V s){
+//        return ts;
+//    }
+//    
+//    public static <V> List<V> topologicalSort(DirectedGraph<V> g){
+//        return g;
+//    }
+//    
+//    
+//    
     
     
     
