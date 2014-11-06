@@ -11,7 +11,6 @@ public class GraphTraversion<V> {
     private List<V> ts;
     
     public static <V> List<V> depthFirstSearch(Graph<V> g, V s) {
-       
        return g;
     }
     

@@ -13,12 +13,12 @@ public class Aufgabe2 {
      */
     public static void main(String[] args) {
         int n = 7;
-        Graph g = new Vertex(5);
-        Graph test = new AdjacencyListUndirectedGraph<Graph>();
+        Graph g = new AdjacencyListUndirectedGraph();
+        Graph test = new AdjacencyListUndirectedGraph<>();
         
         for(int i = 0; i < n; i++){
-        test.adjacencyList.put(g, new AdjacencyListUndirectedGraph<Graph>());
+            g.addVertex(new V(5));
         }
-        test.adjacencyList.get(4).put(g, new AdjacencyListUndirectedGraph<Graph>());  
+        test.adjacencyList.get(4).put(g, new AdjacencyListUndirectedGraph<V>());  
     }
 }
