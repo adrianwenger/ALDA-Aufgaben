@@ -17,35 +17,55 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
 
     @Override
     public int getDegree(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 1;
     }
 
     @Override
     public boolean addVertex(V v) {
+        boolean returnValue = false;
+        returnValue = containsVertex(v);
         //Insert Vertex
-        adjacencyList.put(v, new HashMap<>());
-        return true;
+        if (!returnValue) {
+            adjacencyList.put(v, new HashMap<V, Double>());
+        }
+        return returnValue;
     }
 
     @Override
     public boolean addEdge(V v, V w) {
-        return true;
-        //adjacencyList.get(v).put(v, w);
+        boolean containsEdge = containsEdge(v, w);
+        if (!containsEdge) {
+            adjacencyList.get(v).put(v, 1.0);
+        }
+        return containsEdge;
     }
 
     @Override
     public boolean addEdge(V v, V w, double weight) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            if (containsVertex(v) && containsVertex(w) && v != w) {
+                if (!containsEdge(v, w)) {
+                    adjacencyList.get(v).put(v, weight);
+                }
+                return containsEdge(v, w);
+            } else {
+                throw new IllegalArgumentException("einer der Knoten nicht im Graph vorhanden oder Knoten identischÏ");
+            }
+        } catch (IllegalArgumentException e) {
+            System.err.println(e);
+        } finally {
+            return containsEdge(v, w);
+        }
     }
 
     @Override
     public boolean containsVertex(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return adjacencyList.containsKey(v);
     }
 
     @Override
     public boolean containsEdge(V v, V w) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return adjacencyList.get(v).containsKey(w);
     }
 
     @Override
