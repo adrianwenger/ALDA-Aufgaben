@@ -1,6 +1,7 @@
 package aufgabe2;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -8,93 +9,153 @@ import java.util.List;
  * @author philippschultheiss, Adrian Wenger
  * @param <V>
  */
-public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V>{
+public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
+
+    // Amount of edges;
+    private int numOfEdge = 0;
     HashMap<V, HashMap<V, Double>> adjacencyInput;
-    HashMap<V, HashMap<V, Double>> adjacencyOuput;
-    
+    HashMap<V, HashMap<V, Double>> adjacencyOutput;
+
     public AdjacencyListDirectedGraph() {
         this.adjacencyInput = new HashMap<>();
-        this.adjacencyOuput = new HashMap<>();
+        this.adjacencyOutput = new HashMap<>();
     }
 
     @Override
     public int getInDegree(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        containsVertex(v);
+        return adjacencyInput.get(v).size();
     }
 
     @Override
     public int getOutDegree(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        containsVertex(v);
+        return adjacencyOutput.get(v).size();
     }
 
     @Override
     public List<V> getPredecessorVertexList(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Checks if Vertex in Graph 
+        containsVertex(v);
+        List<V> vertList = new LinkedList<>();
+        for (V vertex : adjacencyInput.get(v).keySet()) {
+            vertList.add(vertex);
+        }
+        return vertList;
     }
 
     @Override
     public List<V> getSuccessorVertexList(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Checks if Vertex in Graph 
+        containsVertex(v);
+        List<V> vertList = new LinkedList<>();
+        for (V vertex : adjacencyOutput.get(v).keySet()) {
+            vertList.add(vertex);
+        }
+        return vertList;
     }
 
     @Override
     public List<Edge<V>> getOutgoingEdgeList(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Checks if Vertex in Graph 
+        containsVertex(v);
+        List<Edge<V>> edgList = new LinkedList<>();
+        for (V vertex : adjacencyOutput.get(v).keySet()) {
+            edgList.add(new Edge<>(v, vertex, adjacencyOutput.get(v).get(vertex)));
+        }
+        return edgList;
     }
 
     @Override
     public List<Edge<V>> getIncomingEdgeList(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Checks if Vertex in Graph 
+        containsVertex(v);
+        List<Edge<V>> edgList = new LinkedList<>();
+        for (V vertex : adjacencyInput.get(v).keySet()) {
+            edgList.add(new Edge<>(v, vertex, adjacencyInput.get(v).get(vertex)));
+        }
+        return edgList;
     }
 
     @Override
     public boolean addVertex(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Checks if Vertex in Graph 
+        if (!adjacencyInput.containsKey(v)) {
+            adjacencyInput.put(v, new HashMap<>());
+            adjacencyOutput.put(v, new HashMap<>());
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean addEdge(V v, V w) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return addEdge(v, w, 1.0);
     }
 
     @Override
     public boolean addEdge(V v, V w, double weight) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Checks if Vertex in Graph 
+        containsVertex(v);
+        if (!containsEdge(v, w)) {
+            adjacencyInput.get(v).put(w, weight);
+            adjacencyOutput.get(v).put(w, weight);
+            numOfEdge++;
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean containsVertex(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!adjacencyInput.containsKey(v)) {
+            if (!adjacencyOutput.containsKey(v)) {
+                throw new IllegalArgumentException("Vertex not in graph!");
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean containsEdge(V v, V w) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Checks if Vertex in Graph 
+        containsVertex(v);
+        if (adjacencyInput.get(v).containsKey(w)) {
+            return true;
+        }
+        return false;
     }
 
     @Override
     public double getWeight(V v, V w) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Checks if Vertex in Graph 
+        containsVertex(v);
+        return adjacencyInput.get(v).get(w);
     }
 
     @Override
     public int getNumberOfVertexes() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return adjacencyInput.size();
     }
 
     @Override
     public int getNumberOfEdges() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return numOfEdge;
     }
 
     @Override
     public List<V> getVertexList() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<V> vertList = new LinkedList<>();
+        for (V vertex : adjacencyInput.keySet()) {
+            vertList.add(vertex);
+        }
+        return vertList;
     }
 
     @Override
     public List<Edge<V>> getEdgeList() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
@@ -106,8 +167,5 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V>{
     public List<Edge<V>> getIncidentEdgeList(V v) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    
-    
+
 }
