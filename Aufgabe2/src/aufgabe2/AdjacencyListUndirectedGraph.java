@@ -72,14 +72,10 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
 
     @Override
     public double getWeight(V v, V w) {
-        if (containsVertex(v) && containsVertex(w)) {
-            if (containsEdge(v, w)) {
-                return adjacencyList.get(v).get(w);
-            } else {
-                return 0;
-            }
+        if (!containsEdge(v, w)) {
+            return 0;
         }
-        throw new IllegalArgumentException("Knoten nicht im Graphen vorhanden");
+        return adjacencyList.get(v).get(w);
     }
 
     @Override
