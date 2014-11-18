@@ -154,18 +154,34 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
 
     @Override
     public List<Edge<V>> getEdgeList() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
+        List<Edge<V>> edgeList = new LinkedList<>();
+        for (V vertex : adjacencyInput.keySet()) {
+            HashMap<V, Double> map = adjacencyInput.get(vertex);
+            for (V edge : map.keySet()) {
+                edgeList.add(new Edge<V>(vertex, edge, map.get(edge)));
+            }
+        }
+        return edgeList;
     }
 
     @Override
     public List<V> getAdjacentVertexList(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        containsVertex(v);
+        List<V> vertList = new LinkedList<>();
+        for (V vertex : adjacencyInput.get(v).keySet()) {
+            vertList.add(vertex);
+        }
+        return vertList;
     }
 
     @Override
     public List<Edge<V>> getIncidentEdgeList(V v) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        containsVertex(v);
+        List<Edge<V>> edgList = new LinkedList<>();
+        for (V vertex : adjacencyInput.get(v).keySet()) {
+            edgList.add(new Edge<>(v, vertex, adjacencyInput.get(v).get(vertex)));
+        }
+        return edgList;
     }
 
 }
