@@ -1,26 +1,78 @@
 package graph;
 
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  *
  * @author philippschultheiss
  */
-public class Aufgabe2 {
+public final class Aufgabe2 {
+
+    private Aufgabe2() {
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         int n = 7;
-        Graph g = new AdjacencyListUndirectedGraph();
-        Graph test = new AdjacencyListUndirectedGraph<>();
-        
-        for(int i = 0; i < n; i++){
-            g.addVertex(new Vertex(5));
-            test.addVertex(new Vertex(10));
+        Graph<V> undirectedGraph = new AdjacencyListUndirectedGraph<>();
+        Graph<V> directedGraph = new AdjacencyListDirectedGraph<>();
+        V[] vertArray = new V[7];
+
+        for (int i = 0; i < vertArray.length; i++) {
+            vertArray[i] = new V(i);
         }
-       // System.out.println(g.toString());
-        System.out.println(test.toString());
+
+        for (int i = 0; i < n; i++) {
+            undirectedGraph.addVertex(vertArray[i]);
+            directedGraph.addVertex(vertArray[i]);
+        }
+
+        for (int i = 0; i < vertArray.length; i++) {
+            int k = (i + 1) % vertArray.length;
+            undirectedGraph.addEdge(vertArray[i], vertArray[k]);
+        }
+
+        List<V> undirectedGraphList = undirectedGraph.getVertexList();
+        List<V> directedGraphList = directedGraph.getVertexList();
+
+        
+        for (V vertex : undirectedGraphList) {
+            System.out.print(GraphTraversion.depthFirstSearch(directedGraph,
+                    vertex));
+        }
+        for (V vertex : undirectedGraphList) {
+            System.out.print(GraphTraversion.breadthFirstSearch(undirectedGraph,
+                    vertex));
+        }
+        
+        System.out.println("");
+        System.out.println("");
+
+//        for (V vertex : directedGraphList) {
+//            System.out.print(GraphTraversion.breadthFirstSearch(directedGraph,
+//                    vertex));
+//        }
+    }
+
+    private static class V {
+
+        private final Integer number;
+
+        public V(final int number) {
+            this.number = number;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        @Override
+        public String toString() {
+            return number.toString();
+        }
     }
 }
