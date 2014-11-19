@@ -36,7 +36,6 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
             throw new IllegalArgumentException("Knoten v nicht"
                     + " im Graph vorhanden");
         }
-        containsVertex(v);
         return adjacencyInput.get(v).size();
     }
 
@@ -46,7 +45,6 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
             throw new IllegalArgumentException("Knoten v "
                     + "nicht im Graph vorhanden");
         }
-        containsVertex(v);
         return adjacencyOutput.get(v).size();
     }
 
@@ -56,8 +54,6 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
             throw new IllegalArgumentException("Knoten v "
                     + "nicht im Graph vorhanden");
         }
-        // Checks if Vertex in Graph
-        containsVertex(v);
         List<V> vertList = new LinkedList<>();
         for (V vertex : adjacencyInput.get(v).keySet()) {
             vertList.add(vertex);
@@ -71,8 +67,6 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
             throw new IllegalArgumentException("Knoten v "
                     + "nicht im Graph vorhanden");
         }
-        // Checks if Vertex in Graph
-        containsVertex(v);
         List<V> vertList = new LinkedList<>();
         for (V vertex : adjacencyOutput.get(v).keySet()) {
             vertList.add(vertex);
@@ -86,8 +80,6 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
             throw new IllegalArgumentException("Knoten v "
                     + "nicht im Graph vorhanden");
         }
-        // Checks if Vertex in Graph
-        containsVertex(v);
         List<Edge<V>> edgList = new LinkedList<>();
         for (V vertex : adjacencyOutput.get(v).keySet()) {
             edgList.add(new Edge<>(v, vertex,
@@ -102,8 +94,6 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
             throw new IllegalArgumentException("Knoten v "
                     + "nicht im Graph vorhanden");
         }
-        // Checks if Vertex in Graph
-        containsVertex(v);
         List<Edge<V>> edgList = new LinkedList<>();
         for (V vertex : adjacencyInput.get(v).keySet()) {
             edgList.add(new Edge<>(v, vertex,
@@ -130,49 +120,34 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
 
     @Override
     public final boolean addEdge(final V v, final V w, final double weight) {
-        if (containsVertex(v) && containsVertex(w) && v != w) {
-            if (!containsEdge(v, w)) {
-                adjacencyInput.get(v).put(w, weight);
-                adjacencyOutput.get(v).put(w, weight);
-                numOfEdge++;
-                return true;
-            }
-            return false;
-        } else {
-            throw new IllegalArgumentException("einer der Knoten nicht im"
-                    + " Graph vorhanden oder Knoten identisch");
+        if (!containsEdge(v, w)) {
+            adjacencyInput.get(w).put(v, weight);
+            adjacencyOutput.get(v).put(w, weight);
+            numOfEdge++;
+            return true;
         }
+        return false;
     }
 
     @Override
     public final boolean containsVertex(final V v) {
-        if (!adjacencyInput.containsKey(v)) {
-            if (!adjacencyOutput.containsKey(v)) {
-                throw new IllegalArgumentException("Vertex not in graph!");
-            }
-        }
-        return true;
+        return adjacencyInput.containsKey(v);
     }
 
     @Override
     public final boolean containsEdge(final V v, final V w) {
-        if (!containsVertex(v) && !containsVertex(w)) {
+        if (!containsVertex(v) && !containsVertex(w) && v != w) {
             throw new IllegalArgumentException("Knoten v und w "
                     + "nicht im Graph vorhanden");
         }
-        // Checks if Vertex in Graph
-        containsVertex(v);
-        return adjacencyInput.get(v).containsKey(w);
+        return adjacencyInput.get(w).containsKey(v);
     }
 
     @Override
     public final double getWeight(final V v, final V w) {
-        if (!containsVertex(v) && !containsVertex(w)) {
-            throw new IllegalArgumentException("Knoten v und w"
-                    + " nicht im Graph vorhanden");
+        if (containsEdge(v, w)) {
+            return 0;
         }
-        // Checks if Vertex in Graph
-        containsVertex(v);
         return adjacencyInput.get(v).get(w);
     }
 
@@ -201,7 +176,7 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
         for (V vertex : adjacencyInput.keySet()) {
             HashMap<V, Double> map = adjacencyInput.get(vertex);
             for (V edge : map.keySet()) {
-                edgeList.add(new Edge<V>(vertex, edge, map.get(edge)));
+                edgeList.add(new Edge<>(vertex, edge, map.get(edge)));
             }
         }
         return edgeList;
@@ -209,31 +184,12 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
 
     @Override
     public final List<V> getAdjacentVertexList(final V v) {
-        if (!containsVertex(v)) {
-            throw new IllegalArgumentException("Knoten v "
-                    + "nicht im Graph vorhanden");
-        }
-        containsVertex(v);
-        List<V> vertList = new LinkedList<>();
-        for (V vertex : adjacencyInput.get(v).keySet()) {
-            vertList.add(vertex);
-        }
-        return vertList;
+        return getSuccessorVertexList(v);
     }
 
     @Override
     public final List<Edge<V>> getIncidentEdgeList(final V v) {
-        if (!containsVertex(v)) {
-            throw new IllegalArgumentException("Knoten v "
-                    + "nicht im Graph vorhanden");
-        }
-        containsVertex(v);
-        List<Edge<V>> edgList = new LinkedList<>();
-        for (V vertex : adjacencyInput.get(v).keySet()) {
-            edgList.add(new Edge<>(v, vertex,
-                    adjacencyInput.get(v).get(vertex)));
-        }
-        return edgList;
+        return getOutgoingEdgeList(v);
     }
 
 }
