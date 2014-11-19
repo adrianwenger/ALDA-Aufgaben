@@ -1,7 +1,7 @@
 // O. Bittel;
 // 18.10.2011
 
-package aufgabe2;
+package graph;
 
 /**
  * Graph mit ungerichteten Kanten.
