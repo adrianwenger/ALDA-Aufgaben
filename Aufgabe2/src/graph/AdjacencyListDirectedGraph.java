@@ -14,11 +14,11 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
     // Amount of edges;
     private int numOfEdge = 0;
     /**
-     * stores the vertex and egdges in front
+     * stores the vertex and egdges in front.
      */
     private final HashMap<V, HashMap<V, Double>> adjacencyInput;
     /**
-     * stores the vertex and edges after
+     * stores the vertex and edges after.
      */
     private final HashMap<V, HashMap<V, Double>> adjacencyOutput;
 
