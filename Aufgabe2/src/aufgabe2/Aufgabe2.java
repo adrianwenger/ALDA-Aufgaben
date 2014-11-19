@@ -17,9 +17,10 @@ public class Aufgabe2 {
         Graph test = new AdjacencyListUndirectedGraph<>();
         
         for(int i = 0; i < n; i++){
-            g.addVertex(new V_alt(5));
+            g.addVertex(new Vertex(5));
+            test.addVertex(new Vertex(10));
         }
-        System.out.println(g.toString());
-       // test.adjacencyList.get(4).put(g, new AdjacencyListUndirectedGraph<V>());  
+       // System.out.println(g.toString());
+        System.out.println(test.toString());
     }
 }

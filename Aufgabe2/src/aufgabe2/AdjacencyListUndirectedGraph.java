@@ -7,43 +7,46 @@ import java.util.List;
 /**
  *
  * @author philippschultheiss
+ * @param <V>
  */
 public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
-
+    // counts amount of Edges
     private int numOfEdge = 0;
-    HashMap<V, HashMap<V, Double>> adjacencyList;
+    private final HashMap<V, HashMap<V, Double>> adjacencyList;
 
+    /**
+     * public Constructor.
+     */
     public AdjacencyListUndirectedGraph() {
         this.adjacencyList = new HashMap<>();
     }
 
     @Override
-    public int getDegree(V v) {
-        int i = 0;
-        for (V vertex : adjacencyList.get(v).keySet()) {
-            i++;
+    public final int getDegree(final V v) {
+        if (!containsVertex(v)) {
+            throw new IllegalArgumentException("Vertext not in graph");
         }
-        return i;
+        return adjacencyList.get(v).size();
     }
 
     @Override
-    public boolean addVertex(V v) {
-        boolean returnValue = false;
-        returnValue = containsVertex(v);
+    public final boolean addVertex(final V v) {
+        // check if Vertex already exists
+        boolean returnValue = containsVertex(v);
         //Insert Vertex
         if (!returnValue) {
-            adjacencyList.put(v, new HashMap<V, Double>());
+            adjacencyList.put(v, new HashMap<>());
         }
         return returnValue;
     }
 
     @Override
-    public boolean addEdge(V v, V w) {
+    public final boolean addEdge(final V v, final V w) {
         return addEdge(v, w, 1.0);
     }
 
     @Override
-    public boolean addEdge(V v, V w, double weight) {
+    public final boolean addEdge(final V v, final V w, final double weight) {
         if (containsVertex(v) && containsVertex(w) && v != w) {
             if (!containsEdge(v, w)) {
                 adjacencyList.get(v).put(v, weight);
@@ -52,26 +55,28 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
             }
             return false;
         } else {
-            throw new IllegalArgumentException("einer der Knoten nicht im Graph vorhanden oder Knoten identisch");
+            throw new IllegalArgumentException("einer der Knoten nicht im"
+                    + " Graph vorhanden oder Knoten identisch");
         }
     }
 
     @Override
-    public boolean containsVertex(V v) {
+    public final boolean containsVertex(final V v) {
         return adjacencyList.containsKey(v);
     }
 
     @Override
-    public boolean containsEdge(V v, V w) {
+    public final boolean containsEdge(final V v, final V w) {
         if (containsVertex(v) && containsVertex(w)) {
             return adjacencyList.get(v).containsKey(w);
         } else {
-            throw new IllegalArgumentException("Knoten nicht im Graphen vorhanden");
+            throw new IllegalArgumentException("Kante nicht "
+                    + "im Graphen vorhanden");
         }
     }
 
     @Override
-    public double getWeight(V v, V w) {
+    public final double getWeight(final V v, final V w) {
         if (!containsEdge(v, w)) {
             return 0;
         }
@@ -79,17 +84,17 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
     }
 
     @Override
-    public int getNumberOfVertexes() {
+    public final int getNumberOfVertexes() {
         return adjacencyList.size();
     }
 
     @Override
-    public int getNumberOfEdges() {
+    public  final int getNumberOfEdges() {
         return numOfEdge;
     }
 
     @Override
-    public List<V> getVertexList() {
+    public final List<V> getVertexList() {
         List<V> vertList = new LinkedList<>();
         for (V vertex : adjacencyList.keySet()) {
             vertList.add(vertex);
@@ -98,7 +103,7 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
     }
 
     @Override
-    public List<Edge<V>> getEdgeList() {
+    public final List<Edge<V>> getEdgeList() {
         List<Edge<V>> edgList = new LinkedList<>();
         for (V vertex : adjacencyList.keySet()) {
             HashMap<V, Double> map = adjacencyList.get(vertex);
@@ -110,7 +115,7 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
     }
 
     @Override
-    public List<V> getAdjacentVertexList(V v) {
+    public final List<V> getAdjacentVertexList(final V v) {
         if (containsVertex(v)) {
             List<V> vertList = new LinkedList<>();
             for (V vertex : adjacencyList.get(v).keySet()) {
@@ -118,20 +123,23 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
             }
             return vertList;
         } else {
-            throw new IllegalArgumentException("Knoten v kommt nicht im Graphen vor");
+            throw new IllegalArgumentException("Knoten v kommt "
+                    + "nicht im Graphen vor");
         }
     }
 
     @Override
-    public List<Edge<V>> getIncidentEdgeList(V v) {
+    public final List<Edge<V>> getIncidentEdgeList(final V v) {
         if (containsVertex(v)) {
             List<Edge<V>> edgList = new LinkedList<>();
             for (V vertex : adjacencyList.get(v).keySet()) {
-                edgList.add(new Edge<>(v, vertex, adjacencyList.get(v).get(vertex)));
+                edgList.add(new Edge<>(v, vertex,
+                        adjacencyList.get(v).get(vertex)));
             }
             return edgList;
         } else {
-            throw new IllegalArgumentException("Knoten v kommt nicht im Graphen vor");
+            throw new IllegalArgumentException("Knoten v kommt nicht "
+                    + "im Graphen vor");
         }
     }
 }
