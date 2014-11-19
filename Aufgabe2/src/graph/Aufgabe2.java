@@ -2,7 +2,6 @@ package graph;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  *
@@ -17,10 +16,10 @@ public final class Aufgabe2 {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
-        int n = 7;
+        int n = 10;
         Graph<V> undirectedGraph = new AdjacencyListUndirectedGraph<>();
         Graph<V> directedGraph = new AdjacencyListDirectedGraph<>();
-        V[] vertArray = new V[7];
+        V[] vertArray = new V[n];
 
         for (int i = 0; i < vertArray.length; i++) {
             vertArray[i] = new V(i);
@@ -34,28 +33,33 @@ public final class Aufgabe2 {
         for (int i = 0; i < vertArray.length; i++) {
             int k = (i + 1) % vertArray.length;
             undirectedGraph.addEdge(vertArray[i], vertArray[k]);
+            directedGraph.addEdge(vertArray[i], vertArray[k]);
         }
 
         List<V> undirectedGraphList = undirectedGraph.getVertexList();
         List<V> directedGraphList = directedGraph.getVertexList();
 
-        
+       System.out.println("undirectedGraph Suche");
         for (V vertex : undirectedGraphList) {
-            System.out.print(GraphTraversion.depthFirstSearch(directedGraph,
+            System.out.print(GraphTraversion.depthFirstSearch(undirectedGraph,
                     vertex));
-        }
-        for (V vertex : undirectedGraphList) {
+            System.out.println("");
             System.out.print(GraphTraversion.breadthFirstSearch(undirectedGraph,
                     vertex));
+            System.out.println("");
         }
-        
-        System.out.println("");
-        System.out.println("");
 
-//        for (V vertex : directedGraphList) {
-//            System.out.print(GraphTraversion.breadthFirstSearch(directedGraph,
-//                    vertex));
-//        }
+        System.out.println("DirectedGraph Suche:");
+ 
+
+        for (V vertex : directedGraphList) {
+            System.out.print(GraphTraversion.depthFirstSearch(directedGraph,
+                    vertex));
+            System.out.println("");
+            System.out.print(GraphTraversion.breadthFirstSearch(directedGraph,
+                    vertex));
+            System.out.println("");
+        }
     }
 
     private static class V {

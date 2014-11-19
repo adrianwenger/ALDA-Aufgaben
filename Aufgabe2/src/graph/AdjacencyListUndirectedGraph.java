@@ -49,7 +49,8 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
     public final boolean addEdge(final V v, final V w, final double weight) {
         if (containsVertex(v) && containsVertex(w) && v != w) {
             if (!containsEdge(v, w)) {
-                adjacencyList.get(v).put(v, weight);
+                adjacencyList.get(v).put(w, weight);
+                adjacencyList.get(w).put(v, weight);
                 numOfEdge++;
                 return true;
             }
