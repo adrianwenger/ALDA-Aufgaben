@@ -24,7 +24,7 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
     @Override
     public final int getDegree(final V v) {
         if (!containsVertex(v)) {
-            throw new IllegalArgumentException("Vertext not in graph");
+            throw new IllegalArgumentException("Vertex not in graph");
         }
         return adjacencyList.get(v).size();
     }

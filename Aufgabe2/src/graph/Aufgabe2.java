@@ -1,6 +1,5 @@
 package graph;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,6 +19,19 @@ public final class Aufgabe2 {
         Graph<V> undirectedGraph = new AdjacencyListUndirectedGraph<>();
         Graph<V> directedGraph = new AdjacencyListDirectedGraph<>();
         V[] vertArray = new V[n];
+
+        //morgendliche Anziehen im Winter mit folgenden Tätigkeiten:
+        String[] anziehen = {"Unterhose", "Unterhemd", "Strümpfe", "Hose", "Gürtel", "Hemd",  "Pullover", "Schuhe", "Mantel", "Schal", "Handschuhe", "Mütze"};
+
+        Graph<String> directedGraph1 = new AdjacencyListDirectedGraph<>();
+        //Tätigkeiten in DirectedGraph als Vertex/Knoten einfügen
+        for(int i = 0; i < anziehen.length; i++){
+            directedGraph1.addVertex(anziehen[i]);
+        }
+        //Kanten einfügen
+        for(int i = 0; i < anziehen.length - 1; i++){
+            directedGraph1.addEdge(anziehen[i], anziehen[i+1]);
+        }
 
         for (int i = 0; i < vertArray.length; i++) {
             vertArray[i] = new V(i);
@@ -50,7 +62,7 @@ public final class Aufgabe2 {
         }
 
         System.out.println("DirectedGraph Suche:");
- 
+
 
         for (V vertex : directedGraphList) {
             System.out.print(GraphTraversion.depthFirstSearch(directedGraph,
