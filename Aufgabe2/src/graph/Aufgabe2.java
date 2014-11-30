@@ -1,36 +1,46 @@
 package graph;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
- * @author philippschultheiss
+ * @author philippschultheiss, Adrian Wenger
  */
-public final class Aufgabe2 {
+final class Aufgabe2 {
 
     private Aufgabe2() {
     }
+    /**
+     *
+     */
+    public static final int TEN = 10;
 
     /**
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
-        int n = 10;
+
+        int n = TEN;
         Graph<V> undirectedGraph = new AdjacencyListUndirectedGraph<>();
         Graph<V> directedGraph = new AdjacencyListDirectedGraph<>();
         V[] vertArray = new V[n];
 
         //morgendliche Anziehen im Winter mit folgenden Tätigkeiten:
-        String[] anziehen = {"Unterhose", "Unterhemd", "Strümpfe", "Hose", "Gürtel", "Hemd",  "Pullover", "Schuhe", "Mantel", "Schal", "Handschuhe", "Mütze"};
+//        String[] anziehen = {"Unterhose", "Unterhemd", "Strümpfe", "Hose",
+//            "Gürtel", "Hemd", "Pullover", "Schuhe", "Mantel", "Schal",
+//            "Handschuhe", "Mütze"};
+         //morgendliche Anziehen im Winter mit folgenden Tätigkeiten:
+        int[] anziehen = {1,2,3,4,5,6,7,8,9,10};
 
-        Graph<String> directedGraph1 = new AdjacencyListDirectedGraph<>();
+        Graph<V> directedGraphAnziehen = new AdjacencyListDirectedGraph<>();
         //Tätigkeiten in DirectedGraph als Vertex/Knoten einfügen
-        for(int i = 0; i < anziehen.length; i++){
-            directedGraph1.addVertex(anziehen[i]);
+        for (int i = 0; i < anziehen.length; i++) {
+            directedGraphAnziehen.addVertex(anziehen[i]);
         }
         //Kanten einfügen
-        for(int i = 0; i < anziehen.length - 1; i++){
-            directedGraph1.addEdge(anziehen[i], anziehen[i+1]);
+        for (int i = 0; i < anziehen.length - 1; i++) {
+            directedGraphAnziehen.addEdge(anziehen[i], anziehen[i + 1]);
         }
 
         for (int i = 0; i < vertArray.length; i++) {
@@ -51,7 +61,7 @@ public final class Aufgabe2 {
         List<V> undirectedGraphList = undirectedGraph.getVertexList();
         List<V> directedGraphList = directedGraph.getVertexList();
 
-       System.out.println("undirectedGraph Suche");
+        System.out.println("undirectedGraph Suche");
         for (V vertex : undirectedGraphList) {
             System.out.print(GraphTraversion.depthFirstSearch(undirectedGraph,
                     vertex));
@@ -63,7 +73,6 @@ public final class Aufgabe2 {
 
         System.out.println("DirectedGraph Suche:");
 
-
         for (V vertex : directedGraphList) {
             System.out.print(GraphTraversion.depthFirstSearch(directedGraph,
                     vertex));
@@ -72,16 +81,41 @@ public final class Aufgabe2 {
                     vertex));
             System.out.println("");
         }
-    }
 
+        System.out.println("topologische Sortierung prüfen");
+
+            List<V> topologicalOrder = new LinkedList();
+            topologicalOrder = GraphTraversion.topologicalSort(directedGraphAnziehen));
+            
+            //
+            //
+            //
+            //
+            //
+
+        }
+        /**
+         *
+         */
     private static class V {
 
+        /**
+         *
+         */
         private final Integer number;
 
-        public V(final int number) {
-            this.number = number;
+        /**
+         *
+         * @param num Nummer
+         */
+        public V(final int num) {
+            this.number = num;
         }
 
+        /**
+         *
+         * @return number
+         */
         public int getNumber() {
             return number;
         }
