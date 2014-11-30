@@ -39,8 +39,9 @@ final class Aufgabe2 {
             directedGraphAnziehen.addVertex(new V(anziehen[i]));
         }
         //Kanten einfügen
-        for (int i = 0; i < anziehen.length - 1; i++) {
-            directedGraphAnziehen.addEdge(new V(anziehen[i]), new V(anziehen[i + 1]));
+        for (int i = 0; i < anziehen.length; i++) {
+            int k = (i + 1) % anziehen.length;
+            directedGraphAnziehen.addEdge(new V(anziehen[i]), new V(anziehen[k]));
         }
 
         for (int i = 0; i < vertArray.length; i++) {
