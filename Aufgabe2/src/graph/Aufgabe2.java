@@ -36,11 +36,11 @@ final class Aufgabe2 {
         Graph<V> directedGraphAnziehen = new AdjacencyListDirectedGraph<>();
         //Tätigkeiten in DirectedGraph als Vertex/Knoten einfügen
         for (int i = 0; i < anziehen.length; i++) {
-            directedGraphAnziehen.addVertex(anziehen[i]);
+            directedGraphAnziehen.addVertex(new V(anziehen[i]));
         }
         //Kanten einfügen
         for (int i = 0; i < anziehen.length - 1; i++) {
-            directedGraphAnziehen.addEdge(anziehen[i], anziehen[i + 1]);
+            directedGraphAnziehen.addEdge(new V(anziehen[i]), new V(anziehen[i + 1]));
         }
 
         for (int i = 0; i < vertArray.length; i++) {
@@ -85,14 +85,12 @@ final class Aufgabe2 {
         System.out.println("topologische Sortierung prüfen");
 
             List<V> topologicalOrder = new LinkedList();
-            topologicalOrder = GraphTraversion.topologicalSort(directedGraphAnziehen));
-            
-            //
-            //
-            //
-            //
-            //
+            topologicalOrder = GraphTraversion.topologicalSort(
+                    (DirectedGraph<V>) directedGraphAnziehen);
 
+            for (V vertex : topologicalOrder) {
+                System.out.println(vertex.getNumber());
+            }
         }
         /**
          *
