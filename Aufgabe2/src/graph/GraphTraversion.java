@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -88,7 +89,39 @@ public final class GraphTraversion<V> {
      * @return LinkedList
      */
     public static <V> List<V> topologicalSort(final DirectedGraph<V> g) {
-        throw new UnsupportedOperationException("not yet");
-    }
+        List<V> ts = new LinkedList<>();
+        int inDegree[] = new int[10];
+        Queue<V> q = new LinkedList<>();
 
+        int i = 0;
+        // for every vertex...
+        for (V vertex : g.getVertexList()) {
+            int numberPresecessorVertexes = g.getPredecessorVertexList(vertex).size();
+            inDegree[i] = numberPresecessorVertexes;
+            if (inDegree[i] == 0) {
+                q.add(vertex);
+
+            }
+            i++;
+        }
+
+        V v;
+        int j = 0;
+        while (!q.isEmpty()) {
+            v = q.remove();
+            ts.add(v);
+            for (V vertex : g.getSuccessorVertexList(v)) {
+                if (inDegree[j] == 0) {
+                    q.add(vertex);
+                }
+                j++;
+            }
+        }
+
+        if (ts.size() != g.getNumberOfVertexes()) {
+            return null;
+        } else {
+            return ts;
+        }
+    }
 }
