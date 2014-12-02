@@ -22,106 +22,69 @@ final class Aufgabe2 {
     public static void main(final String[] args) {
 
         int n = TEN;
-        Graph<V> undirectedGraph = new AdjacencyListUndirectedGraph<>();
-        Graph<V> directedGraph = new AdjacencyListDirectedGraph<>();
-        V[] vertArray = new V[n];
-
+        Graph undirectedGraph = new AdjacencyListUndirectedGraph();
+        Graph directedGraph = new AdjacencyListDirectedGraph();
+        
         //morgendliche Anziehen im Winter mit folgenden Tätigkeiten:
-//        String[] anziehen = {"Unterhose", "Unterhemd", "Strümpfe", "Hose",
-//            "Gürtel", "Hemd", "Pullover", "Schuhe", "Mantel", "Schal",
-//            "Handschuhe", "Mütze"};
+        String[] anziehen = {"Unterhose", "Unterhemd", "Strümpfe", "Hose",
+            "Gürtel", "Hemd", "Pullover", "Schuhe", "Mantel", "Schal",
+            "Handschuhe", "Mütze"};
          //morgendliche Anziehen im Winter mit folgenden Tätigkeiten:
-        int[] anziehen = {1,2,3,4,5,6,7,8,9,10};
-
-        Graph<V> directedGraphAnziehen = new AdjacencyListDirectedGraph<>();
+        //int[] anziehen = {1,2,3,4,5,6,7,8,9,10};
+        
+        AdjacencyListDirectedGraph anzGraph = new AdjacencyListDirectedGraph();
         //Tätigkeiten in DirectedGraph als Vertex/Knoten einfügen
         for (int i = 0; i < anziehen.length; i++) {
-            directedGraphAnziehen.addVertex(new V(anziehen[i]));
+            anzGraph.addVertex(anziehen[i]);
         }
         //Kanten einfügen
         for (int i = 0; i < anziehen.length; i++) {
             int k = (i + 1) % anziehen.length;
-            directedGraphAnziehen.addEdge(new V(anziehen[i]), new V(anziehen[k]));
-        }
-
-        for (int i = 0; i < vertArray.length; i++) {
-            vertArray[i] = new V(i);
+            anzGraph.addEdge(anziehen[i], anziehen[k]);
         }
 
         for (int i = 0; i < n; i++) {
-            undirectedGraph.addVertex(vertArray[i]);
-            directedGraph.addVertex(vertArray[i]);
+            undirectedGraph.addVertex(i);
+            directedGraph.addVertex(i);
         }
 
-        for (int i = 0; i < vertArray.length; i++) {
-            int k = (i + 1) % vertArray.length;
-            undirectedGraph.addEdge(vertArray[i], vertArray[k]);
-            directedGraph.addEdge(vertArray[i], vertArray[k]);
+        for (int i = 0; i < TEN; i++) {
+            int k = (i + 1) % TEN;
+            undirectedGraph.addEdge(i, k);
+            directedGraph.addEdge(i, k);
         }
 
-        List<V> undirectedGraphList = undirectedGraph.getVertexList();
-        List<V> directedGraphList = directedGraph.getVertexList();
+        List undirectedGraphList = undirectedGraph.getVertexList();
+        List directedGraphList = directedGraph.getVertexList();
 
         System.out.println("undirectedGraph Suche");
-        for (V vertex : undirectedGraphList) {
+        for (int i = 0; i < undirectedGraphList.size(); i++) {
             System.out.print(GraphTraversion.depthFirstSearch(undirectedGraph,
-                    vertex));
+                    i));
             System.out.println("");
             System.out.print(GraphTraversion.breadthFirstSearch(undirectedGraph,
-                    vertex));
+                    i));
             System.out.println("");
         }
 
         System.out.println("DirectedGraph Suche:");
 
-        for (V vertex : directedGraphList) {
+        for (int i = 0; i < directedGraphList.size(); i++) {
             System.out.print(GraphTraversion.depthFirstSearch(directedGraph,
-                    vertex));
+                    i));
             System.out.println("");
             System.out.print(GraphTraversion.breadthFirstSearch(directedGraph,
-                    vertex));
+                    i));
             System.out.println("");
         }
 
         System.out.println("topologische Sortierung prüfen");
 
-            List<V> topologicalOrder = new LinkedList();
-            topologicalOrder = GraphTraversion.topologicalSort(
-                    (DirectedGraph<V>) directedGraphAnziehen);
+            List<String> topologicalOrder = new LinkedList();
+            topologicalOrder = GraphTraversion.topologicalSort(anzGraph);
 
-            for (V vertex : topologicalOrder) {
-                System.out.println(vertex.getNumber());
+            for (String vertex : topologicalOrder) {
+                System.out.println(vertex);
             }
         }
-        /**
-         *
-         */
-    private static class V {
-
-        /**
-         *
-         */
-        private final Integer number;
-
-        /**
-         *
-         * @param num Nummer
-         */
-        public V(final int num) {
-            this.number = num;
-        }
-
-        /**
-         *
-         * @return number
-         */
-        public int getNumber() {
-            return number;
-        }
-
-        @Override
-        public String toString() {
-            return number.toString();
-        }
-    }
 }

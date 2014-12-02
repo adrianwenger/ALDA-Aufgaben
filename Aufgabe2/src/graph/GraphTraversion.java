@@ -90,7 +90,7 @@ public final class GraphTraversion<V> {
      */
     public static <V> List<V> topologicalSort(final DirectedGraph<V> g) {
         List<V> ts = new LinkedList<>();
-        int inDegree[] = new int[10];
+        int inDegree[] = new int[12];
         Queue<V> q = new LinkedList<>();
 
         int i = 0;
