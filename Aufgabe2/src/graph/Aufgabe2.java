@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -28,7 +27,6 @@ final class Aufgabe2 {
      * @param args the command line arguments
      */
     public static void main(final String[] args) throws FileNotFoundException, IOException {
-        int n = TEN;
         Graph undirectedGraph = new AdjacencyListUndirectedGraph();
         Graph directedGraph = new AdjacencyListDirectedGraph();
         Graph<Integer> scotland = new AdjacencyListUndirectedGraph<>();
@@ -104,7 +102,7 @@ final class Aufgabe2 {
         System.exit(0);
     }
 
-    /*
+    /**
      *Read in Taxi-Connection
      */
     public static void readInTaxi(Graph graph) throws FileNotFoundException, IOException {
@@ -127,7 +125,7 @@ final class Aufgabe2 {
         in.close();
         br.close();
     }
-    /*
+    /**
     *Aufgabenteil Anziehen
     *Liefert lieste einer topologisch sortierten Anziehreihenfolge
     */
@@ -160,11 +158,11 @@ final class Aufgabe2 {
         List<String> topologicalOrder = GraphTraversion.topologicalSort(anzGraph);
         System.out.println(topologicalOrder);
     }
-    /*
+    /**
     *Tiefen- und Breitensuche für ungerichteten Graph
     */
     public static void undirectedGraphSearch(Graph undirectedGraph){
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < TEN; i++) {
             undirectedGraph.addVertex(i);
         }
         for (int i = 0; i < TEN; i++) {
@@ -184,11 +182,11 @@ final class Aufgabe2 {
             System.out.println("");
         }
     }
-    /*
+    /**
     *Tiefen- und Breitensuche für gerichteten Graph
     */
     public static void directedGraphSearch(Graph directedGraph){
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < TEN; i++) {
             directedGraph.addVertex(i);
         }
 
