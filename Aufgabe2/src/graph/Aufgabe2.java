@@ -37,11 +37,21 @@ final class Aufgabe2 {
         for (int i = 0; i < anziehen.length; i++) {
             anzGraph.addVertex(anziehen[i]);
         }
+
         //Kanten einfügen
-        for (int i = 0; i < anziehen.length; i++) {
-            int k = (i + 1) % anziehen.length;
-            anzGraph.addEdge(anziehen[i], anziehen[k]);
-        }
+        anzGraph.addEdge("Unterhose", "Unterhemd");
+        anzGraph.addEdge("Unterhose", "Strümpfe");
+        anzGraph.addEdge("Unterhemd", "Strümpfe");
+        anzGraph.addEdge("Strümpfe", "Hose");
+        anzGraph.addEdge("Hose", "Gürtel");
+        anzGraph.addEdge("Gürtel", "Hemd");
+        anzGraph.addEdge("Hemd", "Pullover");
+        anzGraph.addEdge("Pullover", "Schuhe");
+        anzGraph.addEdge("Schuhe", "Mantel");
+        anzGraph.addEdge("Mantel", "Schal");
+        anzGraph.addEdge("Schal", "Handschuhe");
+        anzGraph.addEdge("Handschuhe", "Mütze");
+        
 
         for (int i = 0; i < n; i++) {
             undirectedGraph.addVertex(i);

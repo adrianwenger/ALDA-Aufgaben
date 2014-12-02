@@ -90,17 +90,15 @@ public final class GraphTraversion<V> {
      */
     public static <V> List<V> topologicalSort(final DirectedGraph<V> g) {
         List<V> ts = new LinkedList<>();
-        int inDegree[] = new int[12];
+        int inDegree[] = new int[g.getNumberOfVertexes()];
         Queue<V> q = new LinkedList<>();
 
         int i = 0;
         // for every vertex...
         for (V vertex : g.getVertexList()) {
-            int numberPresecessorVertexes = g.getPredecessorVertexList(vertex).size();
-            inDegree[i] = numberPresecessorVertexes;
+            inDegree[i] = g.getPredecessorVertexList(vertex).size();
             if (inDegree[i] == 0) {
                 q.add(vertex);
-
             }
             i++;
         }
@@ -111,15 +109,22 @@ public final class GraphTraversion<V> {
             v = q.remove();
             ts.add(v);
             for (V vertex : g.getSuccessorVertexList(v)) {
-                if (inDegree[j] == 0) {
+                j = 0;
+                for (V vertex2 : g.getVertexList()) {
+                    if (vertex2 == vertex) {
+                        break;
+                    }
+                    j++;
+                }
+                if (--inDegree[j] == 0) {
                     q.add(vertex);
                 }
-                j++;
             }
         }
 
         if (ts.size() != g.getNumberOfVertexes()) {
-            return null;
+            // Graph with cycle
+            throw new IllegalStateException("Zyklus gefunden!");
         } else {
             return ts;
         }
