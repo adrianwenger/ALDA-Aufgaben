@@ -16,12 +16,23 @@ import java.util.List;
  */
 final class Aufgabe2 {
 
+    /**
+     *
+     */
     private Aufgabe2() {
     }
     /**
      *
      */
+    public static final int THREE = 3;
+    /**
+     * 
+     */
     public static final int TEN = 10;
+    /**
+     *
+     */
+    public static final int ZWEIHUNDERT = 200;
 
     /**
      * @param args the command line arguments
@@ -30,12 +41,12 @@ final class Aufgabe2 {
         Graph undirectedGraph = new AdjacencyListUndirectedGraph();
         Graph directedGraph = new AdjacencyListDirectedGraph();
         Graph<Integer> scotland = new AdjacencyListUndirectedGraph<>();
-        
+
         //Anziehen im Winter
         anziehen();
-        
+
         //----------------------------------------------------------------------
-        for (int i = 1; i < 200; i++) {
+        for (int i = 1; i < ZWEIHUNDERT; i++) {
             scotland.addVertex(i);
         }
 
@@ -98,14 +109,14 @@ final class Aufgabe2 {
 
         undirectedGraphSearch(undirectedGraph);
         directedGraphSearch(directedGraph);
-        
+
         System.exit(0);
     }
 
     /**
-     *Read in Taxi-Connection
+     * Read in Taxi-Connection.
      */
-    public static void readInTaxi(Graph graph) throws FileNotFoundException, IOException {
+    public static void readInTaxi(final Graph graph) throws FileNotFoundException, IOException {
         //Einlesen Taxi-Verbindungen
         FileReader fr = new FileReader("/Users/philippschultheiss/Documents/HTWG/3_Semester/ALDA/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
         BufferedReader br = new BufferedReader(fr);
@@ -114,7 +125,7 @@ final class Aufgabe2 {
         String line;
         while ((line = in.readLine()) != null) {
             String[] sf = line.split(" ");
-            if (sf.length == 3) {
+            if (sf.length == THREE) {
                 if (sf[2].equals("Taxi")) {
                     int vertexOne = Integer.parseInt(sf[0]);
                     int vertexTwo = Integer.parseInt(sf[1]);
@@ -125,12 +136,13 @@ final class Aufgabe2 {
         in.close();
         br.close();
     }
+
     /**
-    *Aufgabenteil Anziehen
-    *Liefert lieste einer topologisch sortierten Anziehreihenfolge
-    */
-    public static void anziehen(){
-                //morgendliche Anziehen im Winter mit folgenden Tätigkeiten:
+     * Aufgabenteil Anziehen Liefert lieste einer topologisch sortierten.
+     * Anziehreihenfolge
+     */
+    public static void anziehen() {
+        //morgendliche Anziehen im Winter mit folgenden Tätigkeiten:
         String[] anziehen = {"Unterhose", "Unterhemd", "Strümpfe", "Hose",
             "Gürtel", "Hemd", "Pullover", "Schuhe", "Mantel", "Schal",
             "Handschuhe", "Mütze"};
@@ -152,16 +164,17 @@ final class Aufgabe2 {
         anzGraph.addEdge("Mantel", "Schal");
         anzGraph.addEdge("Schal", "Handschuhe");
         anzGraph.addEdge("Handschuhe", "Mütze");
-        
+
         System.out.println("topologische Sortierung prüfen");
 
         List<String> topologicalOrder = GraphTraversion.topologicalSort(anzGraph);
         System.out.println(topologicalOrder);
     }
+
     /**
-    *Tiefen- und Breitensuche für ungerichteten Graph
-    */
-    public static void undirectedGraphSearch(Graph undirectedGraph){
+     * Tiefen- und Breitensuche für ungerichteten Graph.
+     */
+    public static void undirectedGraphSearch(final Graph undirectedGraph) {
         for (int i = 0; i < TEN; i++) {
             undirectedGraph.addVertex(i);
         }
@@ -182,10 +195,11 @@ final class Aufgabe2 {
             System.out.println("");
         }
     }
+
     /**
-    *Tiefen- und Breitensuche für gerichteten Graph
-    */
-    public static void directedGraphSearch(Graph directedGraph){
+     * Tiefen- und Breitensuche für gerichteten Graph.
+     */
+    public static void directedGraphSearch(final Graph directedGraph) {
         for (int i = 0; i < TEN; i++) {
             directedGraph.addVertex(i);
         }
