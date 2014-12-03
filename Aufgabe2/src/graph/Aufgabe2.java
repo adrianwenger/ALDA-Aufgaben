@@ -26,7 +26,7 @@ final class Aufgabe2 {
      */
     public static final int THREE = 3;
     /**
-     * 
+     *
      */
     public static final int TEN = 10;
     /**
@@ -105,7 +105,30 @@ final class Aufgabe2 {
             sim.drive(i, j, Color.CYAN);
         }
         sim.stopSequence();
+
         //----------------------------------------------------------------------
+        sim.startSequence("DijkstraTaxi");
+        DijkstraShortestPath<Integer> dijkstra =
+                new DijkstraShortestPath<>(scotland);
+        dijkstra.searchShortestPath(20, 54);
+        depthTaxi = dijkstra.getShortestPath();
+        //Taxistationen besuchen
+        for (Integer v : depthTaxi) {
+            sim.visitStation(v);
+        }
+
+        iter = depthTaxi.iterator();
+        iter2 = depthTaxi.iterator();
+        iter2.next();
+        while (iter.hasNext()) {
+            int i = iter.next();
+            if (!iter2.hasNext()) {
+                break;
+            }
+            int j = iter2.next();
+            sim.drive(i, j, Color.CYAN);
+        }
+        sim.stopSequence();
 
         undirectedGraphSearch(undirectedGraph);
         directedGraphSearch(directedGraph);
@@ -118,7 +141,8 @@ final class Aufgabe2 {
      */
     public static void readInTaxi(final Graph graph) throws FileNotFoundException, IOException {
         //Einlesen Taxi-Verbindungen
-        FileReader fr = new FileReader("/Users/philippschultheiss/Documents/HTWG/3_Semester/ALDA/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
+        //FileReader fr = new FileReader("/Users/philippschultheiss/Documents/HTWG/3_Semester/ALDA/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
+        FileReader fr = new FileReader("/Users/Adi/Studium/Semester3/Git_Hub/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
         BufferedReader br = new BufferedReader(fr);
         LineNumberReader in = null;
         in = new LineNumberReader(fr);

@@ -1,8 +1,9 @@
 package graph;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -27,6 +28,11 @@ public class DijkstraShortestPath<V> {
     private double distance;
 
     /**
+     *
+     */
+    private boolean success = false;
+
+    /**
      * Constructor.
      *
      * @param g Graph
@@ -39,74 +45,88 @@ public class DijkstraShortestPath<V> {
      * searches the shortest way from s to g.
      *
      * @param s start vertex
-     * @param g target vertex
+     * @param z target vertex
      * @return boolean value
      */
-    public final boolean searchShortestPath(final V s, final V g) {
-        // leere Kandidatenliste erstellen
+    public final boolean searchShortestPath(final V s, final V z) {
+        // candidate list
         List<V> kl = new LinkedList<>();
         // Distance Array
         double[] d = new double[graph.getNumberOfVertexes()];
         // predecessor Array
-        List<V> p = new ArrayList<>();
+        Map<V, V> p = new HashMap<>();
+        // already visited vertex list
+        List<V> alreadyVisited = new LinkedList<>();
 
-        // walk through every vetex
+        // walk through every vetex d[v] = endless
         for (int i = 0; i < graph.getNumberOfVertexes(); i++) {
             d[i] = Double.MAX_VALUE; // alike endless
-            p.set(i, null);   // undefined value
         }
-        // Startvertex
+        // put in p[v] = undef
+        for (V vertex : graph.getVertexList()) {
+            p.put(vertex, null);
+        }
+
+        // save Startvertex at point d[s]
         int i = 0;
         for (V vertex : graph.getVertexList()) {
-            if (vertex == s) {
+            if (vertex.equals(s)) {
                 break;
             }
             i++;
         }
         d[i] = 0;
+        // add startvertex into candidate list
         kl.add(s);
 
         double j = 0;
         int index = 0;
+        // walk through candidate list
         while (!kl.isEmpty()) {
-            for (int k = 0; i < d.length; k++) {
-                if (d[k] == 0) {
-                    continue;
-                }
+            for (int k = 0; i < d.length; i++) {
                 if (d[k] < j) {
                     j = d[k];
                     index = k;
-                    d[k] = 0;
                 }
             }
+            // v with minimal d[v]
             V vertex = graph.getVertexList().get(index);
-            kl.remove(graph.getVertexList().get(index));
+            kl.remove(vertex);
 
-            // target vertex reached --> shortest path found
-            if (vertex == g) {
-                //shortestPath = p;
-                //distance = p.size();
+            if (vertex.equals(z)) {
+                LinkedList<V> l = new LinkedList<>();
+                l.push(z);
+                V help = p.get(z);
+                while (help != s) {
+                    l.push(help);
+                    help = p.get(help);
+                }
+                l.push(help);
+                this.shortestPath = l;
+                success = true;
                 return true;
             }
-            
+            // every adjacent vertex w to v
             for (V v : graph.getAdjacentVertexList(vertex)) {
                 i = 0;
-                for (V vert : graph.getVertexList()) {
-                    if (vert == v) {
+                for (V w : graph.getVertexList()) {
+                    if (w.equals(v)) {
                         break;
                     }
                     i++;
                 }
                 // not visited and not in kl
                 if (d[i] == Double.MAX_VALUE) {
+                    // add into candidate list kl
                     kl.add(graph.getVertexList().get(i));
                 }
                 if ((d[index] + graph.getWeight(vertex, v)) < d[i]) {
-                    p.set(i, vertex);
+                    p.put(v, vertex);
                     d[i] = d[index] + graph.getWeight(vertex, v);
                 }
             }
         }
+        success = false;
         return false;
     }
 
@@ -116,7 +136,9 @@ public class DijkstraShortestPath<V> {
      * @return List
      */
     public final List<V> getShortestPath() {
-
+        if (!success) {
+            throw new IllegalStateException("kein Weg vorhanden");
+        }
         return shortestPath;
     }
 
@@ -126,8 +148,10 @@ public class DijkstraShortestPath<V> {
      * @return length shortest way
      */
     public final double getDistance() {
-
-        return 0;
+        if (!success) {
+            throw new IllegalStateException("kein Weg vorhanden");
+        }
+        return distance;
     }
 
 }
