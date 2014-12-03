@@ -54,6 +54,8 @@ public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
                 numOfEdge++;
                 return true;
             }
+            adjacencyList.get(v).put(w, weight);
+            adjacencyList.get(w).put(v, weight);
             return false;
         } else {
             throw new IllegalArgumentException("einer der Knoten nicht im"

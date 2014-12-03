@@ -55,8 +55,6 @@ public class DijkstraShortestPath<V> {
         double[] d = new double[graph.getNumberOfVertexes()];
         // predecessor Array
         Map<V, V> p = new HashMap<>();
-        // already visited vertex list
-        List<V> alreadyVisited = new LinkedList<>();
 
         // walk through every vetex d[v] = endless
         for (int i = 0; i < graph.getNumberOfVertexes(); i++) {
@@ -83,10 +81,20 @@ public class DijkstraShortestPath<V> {
         int index = 0;
         // walk through candidate list
         while (!kl.isEmpty()) {
-            for (int k = 0; i < d.length; i++) {
-                if (d[k] < j) {
-                    j = d[k];
-                    index = k;
+            double minDist = Double.MAX_VALUE;
+            for (V candidate : kl) {
+                i = graph.getVertexList().lastIndexOf(candidate);
+                if (graph.getVertexList().get(i).equals(z)) {
+                    if (d[i] < minDist) {
+                        minDist = d[i];
+                        index = i;
+                    }
+                    continue;
+                }
+                // 
+                if ((d[i] + graph.getWeight(graph.getVertexList().get(i), z)) < minDist) {
+                    minDist = d[i] + graph.getWeight(graph.getVertexList().get(i), z);
+                    index = i;
                 }
             }
             // v with minimal d[v]

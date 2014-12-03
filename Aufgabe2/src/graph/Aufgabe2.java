@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -37,7 +38,8 @@ final class Aufgabe2 {
     /**
      * @param args the command line arguments
      */
-    public static void main(final String[] args) throws FileNotFoundException, IOException {
+    public static void main(final String[] args) throws FileNotFoundException,
+            IOException {
         Graph undirectedGraph = new AdjacencyListUndirectedGraph();
         Graph directedGraph = new AdjacencyListDirectedGraph();
         Graph<Integer> scotland = new AdjacencyListUndirectedGraph<>();
@@ -52,7 +54,12 @@ final class Aufgabe2 {
 
         //Read Taxi-List
         readInTaxi(scotland);
-        System.out.println("EdgeList - ScotlandYard:");
+        System.out.println("EdgeList - ScotlandYard - TAXI:");
+        System.out.println(scotland.getEdgeList());
+
+        //Read All possible alternative
+        readInAll(scotland);
+        System.out.println("EdgeList - ScotlandYard - ALL:");
         System.out.println(scotland.getEdgeList());
 
         //Simulation
@@ -66,6 +73,7 @@ final class Aufgabe2 {
 
         List<Integer> breadthTaxi = GraphTraversion.breadthFirstSearch(scotland, 1);
         List<Integer> depthTaxi = GraphTraversion.depthFirstSearch(scotland, 1);
+        List<Integer> dijkstraTaxi = new LinkedList<>();
 
         //GUI starten
         sim.startSequence("BreadthTaxi");
@@ -108,17 +116,17 @@ final class Aufgabe2 {
 
         //----------------------------------------------------------------------
         sim.startSequence("DijkstraTaxi");
-        DijkstraShortestPath<Integer> dijkstra =
-                new DijkstraShortestPath<>(scotland);
+        DijkstraShortestPath<Integer> dijkstra
+                = new DijkstraShortestPath<>(scotland);
         dijkstra.searchShortestPath(20, 54);
-        depthTaxi = dijkstra.getShortestPath();
+        dijkstraTaxi = dijkstra.getShortestPath();
         //Taxistationen besuchen
-        for (Integer v : depthTaxi) {
+        for (Integer v : dijkstraTaxi) {
             sim.visitStation(v);
         }
 
-        iter = depthTaxi.iterator();
-        iter2 = depthTaxi.iterator();
+        iter = dijkstraTaxi.iterator();
+        iter2 = dijkstraTaxi.iterator();
         iter2.next();
         while (iter.hasNext()) {
             int i = iter.next();
@@ -126,7 +134,19 @@ final class Aufgabe2 {
                 break;
             }
             int j = iter2.next();
-            sim.drive(i, j, Color.CYAN);
+            switch ((int) scotland.getWeight(i, j)) {
+                case 2:
+                    sim.drive(i, j, Color.GREEN);
+                    break;
+                case 3:
+                    sim.drive(i, j, Color.YELLOW);
+                    break;
+                case 5:
+                    sim.drive(i, j, Color.MAGENTA);
+                    break;
+                default:
+                    sim.drive(i, j, Color.CYAN);
+            }
         }
         sim.stopSequence();
 
@@ -154,6 +174,34 @@ final class Aufgabe2 {
                     int vertexOne = Integer.parseInt(sf[0]);
                     int vertexTwo = Integer.parseInt(sf[1]);
                     graph.addEdge(vertexOne, vertexTwo);
+                }
+            }
+        }
+        in.close();
+        br.close();
+    }
+
+    public static void readInAll(final Graph graph) throws FileNotFoundException, IOException {
+        //Einlesen Taxi-Verbindungen
+        //FileReader fr = new FileReader("/Users/philippschultheiss/Documents/HTWG/3_Semester/ALDA/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
+        FileReader fr = new FileReader("/Users/Adi/Studium/Semester3/Git_Hub/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
+        BufferedReader br = new BufferedReader(fr);
+        LineNumberReader in = null;
+        in = new LineNumberReader(fr);
+        String line;
+        while ((line = in.readLine()) != null) {
+            String[] sf = line.split(" ");
+            if (sf.length == THREE) {
+                int vertexOne = Integer.parseInt(sf[0]);
+                int vertexTwo = Integer.parseInt(sf[1]);
+                if (sf[2].equals("Bus")) {
+                    graph.addEdge(vertexOne, vertexTwo, 2);
+                }
+                if (sf[2].equals("UBahn")) {
+                    graph.addEdge(vertexOne, vertexTwo, 5);
+                }
+                if (sf[2].equals("Taxi")) {
+                    graph.addEdge(vertexOne, vertexTwo, 3);
                 }
             }
         }
