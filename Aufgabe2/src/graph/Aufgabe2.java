@@ -36,10 +36,10 @@ final class Aufgabe2 {
     public static final int ZWEIHUNDERT = 200;
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments.
+     * @throws IOException
      */
-    public static void main(final String[] args) throws FileNotFoundException,
-            IOException {
+    public static void main(final String[] args) throws IOException {
         Graph undirectedGraph = new AdjacencyListUndirectedGraph();
         Graph directedGraph = new AdjacencyListDirectedGraph();
         Graph<Integer> scotland = new AdjacencyListUndirectedGraph<>();
@@ -71,7 +71,8 @@ final class Aufgabe2 {
             return;
         }
 
-        List<Integer> breadthTaxi = GraphTraversion.breadthFirstSearch(scotland, 1);
+        List<Integer> breadthTaxi =
+                GraphTraversion.breadthFirstSearch(scotland, 1);
         List<Integer> depthTaxi = GraphTraversion.depthFirstSearch(scotland, 1);
         List<Integer> dijkstraTaxi = new LinkedList<>();
 
@@ -118,7 +119,7 @@ final class Aufgabe2 {
         sim.startSequence("DijkstraTaxi");
         DijkstraShortestPath<Integer> dijkstra
                 = new DijkstraShortestPath<>(scotland);
-        dijkstra.searchShortestPath(20, 54);
+        dijkstra.searchShortestPath(1, 199);
         dijkstraTaxi = dijkstra.getShortestPath();
         //Taxistationen besuchen
         for (Integer v : dijkstraTaxi) {
@@ -158,8 +159,10 @@ final class Aufgabe2 {
 
     /**
      * Read in Taxi-Connection.
+     * @param graph graph
+     * @throws IOException if file not found
      */
-    public static void readInTaxi(final Graph graph) throws FileNotFoundException, IOException {
+    public static void readInTaxi(final Graph graph) throws IOException {
         //Einlesen Taxi-Verbindungen
         //FileReader fr = new FileReader("/Users/philippschultheiss/Documents/HTWG/3_Semester/ALDA/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
         FileReader fr = new FileReader("/Users/Adi/Studium/Semester3/Git_Hub/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
@@ -181,7 +184,12 @@ final class Aufgabe2 {
         br.close();
     }
 
-    public static void readInAll(final Graph graph) throws FileNotFoundException, IOException {
+    /**
+     * read all lines from fr into graph scotland.
+     * @param graph graph
+     * @throws IOException If FIle not found
+     */
+    public static void readInAll(final Graph graph) throws IOException {
         //Einlesen Taxi-Verbindungen
         //FileReader fr = new FileReader("/Users/philippschultheiss/Documents/HTWG/3_Semester/ALDA/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
         FileReader fr = new FileReader("/Users/Adi/Studium/Semester3/Git_Hub/ALDA-Aufgaben/Aufgabe2/src/graph/ScotlandYard.txt");
@@ -239,12 +247,14 @@ final class Aufgabe2 {
 
         System.out.println("topologische Sortierung prüfen");
 
-        List<String> topologicalOrder = GraphTraversion.topologicalSort(anzGraph);
+        List<String> topologicalOrder =
+                GraphTraversion.topologicalSort(anzGraph);
         System.out.println(topologicalOrder);
     }
 
     /**
      * Tiefen- und Breitensuche für ungerichteten Graph.
+     * @param undirectedGraph undirectedGraph
      */
     public static void undirectedGraphSearch(final Graph undirectedGraph) {
         for (int i = 0; i < TEN; i++) {
@@ -270,6 +280,7 @@ final class Aufgabe2 {
 
     /**
      * Tiefen- und Breitensuche für gerichteten Graph.
+     * @param directedGraph directedGraph
      */
     public static void directedGraphSearch(final Graph directedGraph) {
         for (int i = 0; i < TEN; i++) {

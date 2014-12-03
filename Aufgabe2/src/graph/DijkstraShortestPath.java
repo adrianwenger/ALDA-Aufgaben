@@ -56,17 +56,18 @@ public class DijkstraShortestPath<V> {
         // predecessor Array
         Map<V, V> p = new HashMap<>();
 
-        // walk through every vetex d[v] = endless
+        // walk through every vetex and set d[v] = endless
         for (int i = 0; i < graph.getNumberOfVertexes(); i++) {
             d[i] = Double.MAX_VALUE; // alike endless
         }
-        // put in p[v] = undef
+        // put in p[v] every vertex with  null value
         for (V vertex : graph.getVertexList()) {
             p.put(vertex, null);
         }
 
         // save Startvertex at point d[s]
         int i = 0;
+        // find index of start Vertex and count i++ till reached;
         for (V vertex : graph.getVertexList()) {
             if (vertex.equals(s)) {
                 break;
@@ -84,9 +85,13 @@ public class DijkstraShortestPath<V> {
             double minDist = Double.MAX_VALUE;
             for (V candidate : kl) {
                 i = graph.getVertexList().lastIndexOf(candidate);
+                // vertrex at position i is same than traget Vertrex z
                 if (graph.getVertexList().get(i).equals(z)) {
+                    //distance at d[i] < minDist
                     if (d[i] < minDist) {
+                        // set minDist to d[i]
                         minDist = d[i];
+                        // set index to i
                         index = i;
                     }
                     continue;
@@ -97,26 +102,36 @@ public class DijkstraShortestPath<V> {
                     index = i;
                 }
             }
-            // v with minimal d[v]
+            // save vertrex at position index (min vertex)
             V vertex = graph.getVertexList().get(index);
+            // remove vertrex of candidates
             kl.remove(vertex);
 
+            // if vertex equals traget vertrex z
+            // push the vertrex into shortestPath
             if (vertex.equals(z)) {
                 LinkedList<V> l = new LinkedList<>();
                 l.push(z);
                 V help = p.get(z);
+                // help == traget vertex
+                // ipush help to shortestPath and set help
+                // to a new help from p
                 while (help != s) {
                     l.push(help);
                     help = p.get(help);
                 }
+                // push help at last
                 l.push(help);
                 this.shortestPath = l;
+                // shortest path found
                 success = true;
                 return true;
             }
+            
             // every adjacent vertex w to v
             for (V v : graph.getAdjacentVertexList(vertex)) {
                 i = 0;
+                // walk through vertexList till v reached with i++
                 for (V w : graph.getVertexList()) {
                     if (w.equals(v)) {
                         break;
