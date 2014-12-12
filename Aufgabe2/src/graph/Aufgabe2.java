@@ -3,7 +3,6 @@ package graph;
 import SYSimulation.src.sim.SYSimulation;
 import java.awt.Color;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;

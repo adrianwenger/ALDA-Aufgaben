@@ -50,25 +50,28 @@ public class DijkstraShortestPath<V> {
      */
     public final boolean searchShortestPath(final V s, final V z) {
         // candidate list
-        List<V> kl = new LinkedList<>();
-        // Distance Array
+        List<V> kl = graph.getAdjacentVertexList(s);
+        // Distance Map
         double[] d = new double[graph.getNumberOfVertexes()];
         // predecessor Array
         Map<V, V> p = new HashMap<>();
 
+        List<V> vertList = graph.getVertexList();
         // walk through every vetex and set d[v] = endless
         for (int i = 0; i < graph.getNumberOfVertexes(); i++) {
-            d[i] = Double.MAX_VALUE; // alike endless
+            // alike endless
+            d[i] = Double.MAX_VALUE;
         }
+
         // put in p[v] every vertex with  null value
-        for (V vertex : graph.getVertexList()) {
+        for (V vertex : vertList) {
             p.put(vertex, null);
         }
 
         // save Startvertex at point d[s]
         int i = 0;
         // find index of start Vertex and count i++ till reached;
-        for (V vertex : graph.getVertexList()) {
+        for (V vertex : vertList) {
             if (vertex.equals(s)) {
                 break;
             }
@@ -78,15 +81,15 @@ public class DijkstraShortestPath<V> {
         // add startvertex into candidate list
         kl.add(s);
 
-        double j = 0;
-        int index = 0;
         // walk through candidate list
         while (!kl.isEmpty()) {
             double minDist = Double.MAX_VALUE;
+            int index = 0;
             for (V candidate : kl) {
-                i = graph.getVertexList().lastIndexOf(candidate);
+                double j = 0;
+                i = vertList.lastIndexOf(candidate);
                 // vertrex at position i is same than traget Vertrex z
-                if (graph.getVertexList().get(i).equals(z)) {
+                if (vertList.get(i).equals(z)) {
                     //distance at d[i] < minDist
                     if (d[i] < minDist) {
                         // set minDist to d[i]
@@ -97,16 +100,13 @@ public class DijkstraShortestPath<V> {
                     continue;
                 }
                 // 
-                if ((d[i] + graph.getWeight(graph.getVertexList().get(i), z)) < minDist) {
-                    minDist = d[i] + graph.getWeight(graph.getVertexList().get(i), z);
+                if ((d[i] + graph.getWeight(vertList.get(i), z)) < minDist) {
+                    minDist = d[i] + graph.getWeight(vertList.get(i), z);
                     index = i;
                 }
             }
             // save vertrex at position index (min vertex)
-            V vertex = graph.getVertexList().get(index);
-            // remove vertrex of candidates
-            kl.remove(vertex);
-
+            V vertex = vertList.get(index);
             // if vertex equals traget vertrex z
             // push the vertrex into shortestPath
             if (vertex.equals(z)) {
@@ -124,15 +124,17 @@ public class DijkstraShortestPath<V> {
                 l.push(help);
                 this.shortestPath = l;
                 // shortest path found
+                this.distance = minDist; 
                 success = true;
                 return true;
             }
-            
+            // remove vertrex of candidates
+            kl.remove(vertex);
             // every adjacent vertex w to v
             for (V v : graph.getAdjacentVertexList(vertex)) {
                 i = 0;
                 // walk through vertexList till v reached with i++
-                for (V w : graph.getVertexList()) {
+                for (V w : vertList) {
                     if (w.equals(v)) {
                         break;
                     }
@@ -141,10 +143,11 @@ public class DijkstraShortestPath<V> {
                 // not visited and not in kl
                 if (d[i] == Double.MAX_VALUE) {
                     // add into candidate list kl
-                    kl.add(graph.getVertexList().get(i));
+                    kl.add(vertList.get(i));
                 }
                 if ((d[index] + graph.getWeight(vertex, v)) < d[i]) {
                     p.put(v, vertex);
+                    //d[i] = d[index] + graph.getWeight(vertex, v);
                     d[i] = d[index] + graph.getWeight(vertex, v);
                 }
             }

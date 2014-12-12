@@ -10,8 +10,13 @@ import java.util.List;
  * @param <V>
  */
 public class AdjacencyListUndirectedGraph<V> implements UndirectedGraph<V> {
-    // counts amount of Edges
+    /**
+     * counts amount of Edges.
+     */
     private int numOfEdge = 0;
+    /**
+     * 
+     */
     private final HashMap<V, HashMap<V, Double>> adjacencyList;
 
     /**
